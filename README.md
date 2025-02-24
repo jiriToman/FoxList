@@ -6,7 +6,7 @@ K vytvoření projektu bylo použito `npx create-next-app@latest` pro zjednoduš
 
 ## Spuštění
 
-Pro spuštění vývojového serveru používám následující příkaz:
+Pro spuštění vývojového serveru na portu 3001 používám následující příkaz:
 
 ```bash
 npm run dev
