@@ -1,1 +1,13 @@
 # FoxList
+
+Tento projekt slouží jako testovací zadání pro přijímací proces do společnosti Foxentry. Jedná se o frontendovou aplikaci, která komunikuje s backendem a využívá jeho API.
+
+K vytvoření projektu bylo použito `npx create-next-app@latest` pro zjednodušení nastavení Next.js.
+
+## Spuštění
+
+Pro spuštění vývojového serveru používám následující příkaz:
+
+```bash
+npm run dev
+
