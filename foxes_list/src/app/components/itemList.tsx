@@ -1,7 +1,9 @@
-import React from 'react';
-import SimpleTableItem from './simpleTableItem';
+"use client";
+import React, {useState} from 'react';
+import TableItem from './tableItem';
 
 interface Item {
+  id: number;
   name: string;
   price: number;
   stockQuantity: number;
@@ -10,29 +12,34 @@ interface Item {
 interface ItemListProps {
     items: Item[];
 }
-const ItemList: React.FC<ItemListProps> = ({items}) => {
+const ItemList: React.FC<ItemListProps> = ({items: initialItems}) => {
+    const [items, setItems] = useState<Item[]>(initialItems);
 
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Stock Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((item, index) => (
-          <SimpleTableItem
-            key={index}
-            name={item.name}
-            price={item.price}
-            stockQuantity={item.stockQuantity}
-          />
-        ))}
-      </tbody>
-    </table>
-  );
+    const handleItemDeleted = (itemId: number) => {
+        setItems(prevItems => prevItems.filter(item => item.id !== itemId));
+    };
+
+    return (
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock Quantity</th>
+                <th>Delete Link</th>
+            </tr>
+            </thead>
+            <tbody>
+            {items.map(item => (
+                <TableItem
+                    key={item.id}
+                    item={item}
+                    onItemDeleted={handleItemDeleted}
+                />
+            ))}
+            </tbody>
+        </table>
+    );
 };
 
 export default ItemList;
