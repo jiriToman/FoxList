@@ -50,7 +50,7 @@ const TableItem: React.FC<TableItemProps> = ({ item, onItemDeleted, onItemUpdate
     };
 
     return (
-        <tr className="[&>*:not(:last-child)]:mr-0"> {/* Removed extra whitespace here */}
+        <tr className="[&>*:not(:last-child)]:mr-0">
             <td className="p-[15px]">{name}</td>
             <td className="p-[15px]">${price.toFixed(2)}</td>
             <td className="p-[15px]">{stockQuantity}</td>
