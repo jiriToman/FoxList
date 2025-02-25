@@ -1,5 +1,5 @@
 import ItemList from "./components/itemList";
-import getItemsHandler from "./api/items";
+import {getItemsHandler} from "./api/api";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
