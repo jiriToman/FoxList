@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import { deleteItemHandler, updateItemHandler } from '@/app/api/api';
+import { deleteItemHandler, updateItemHandler, Item } from '@/app/api/api';
 import UpdateForm from './updateForm';
-
-interface Item {
-    id: number;
-    name: string;
-    price: number;
-    stockQuantity: number;
-}
 
 interface TableItemProps {
     item: Item;
@@ -57,11 +50,11 @@ const TableItem: React.FC<TableItemProps> = ({ item, onItemDeleted, onItemUpdate
     };
 
     return (
-        <tr className="[&>*:not(:last-child)]:mr-0"> {/*Removed  margin-right */}
-            <td className="p-[15px]">{name}</td> {/* Added padding here */}
-            <td className="p-[15px]">${price.toFixed(2)}</td> {/* Added padding here */}
-            <td className="p-[15px]">{stockQuantity}</td> {/* Added padding here */}
-            <td className="p-[15px] flex justify-center"> {/* Added padding here and flex for allignment */}
+        <tr className="[&>*:not(:last-child)]:mr-0"> {/* Removed extra whitespace here */}
+            <td className="p-[15px]">{name}</td>
+            <td className="p-[15px]">${price.toFixed(2)}</td>
+            <td className="p-[15px]">{stockQuantity}</td>
+            <td className="p-[15px] flex justify-center">
                 <button onClick={handleDeleteClick} disabled={isDeleting} className="px-[5px] py-[2px] mr-2">
                     {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>

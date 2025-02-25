@@ -3,12 +3,35 @@ export interface Item {
   name: string;
   price: number;
   stockQuantity: number;
+  inactive?: boolean;
 }
 
-export async function getItemsHandler(): Promise<Item[]> {
-  const res = await fetch('http://localhost:3000/products', {
+export async function getItemsHandler(
+  name?: string,
+  minStock?: number | null,
+  maxStock?: number | null,
+  includeInactive?: boolean
+): Promise<Item[]> {
+  const queryParams = new URLSearchParams();
+  if (name) {
+      queryParams.append('name', name);
+  }
+  if (minStock !== null && minStock !== undefined) {
+      queryParams.append('minStock', minStock.toString());
+  }
+  if (maxStock !== null && maxStock !== undefined) {
+      queryParams.append('maxStock', maxStock.toString());
+  }
+  if (includeInactive) {
+      queryParams.append('includeInactive', includeInactive.toString());
+  }
+
+  const url = `http://localhost:3000/products${queryParams.size > 0 ? `?${queryParams.toString()}` : ''}`;
+
+  const res = await fetch(url, {
       cache: 'no-store',
   });
+
   if (!res.ok) {
       throw new Error('Failed to fetch items');
   }
@@ -40,8 +63,7 @@ export async function updateItemHandler(itemId: number, updateData: { name: stri
       throw new Error(`Request failed with status: ${response.status}`);
   }
 
-  return response.json(); // Assuming the server returns the updated item data
-}
+  return response.json(); 
 
 export async function createItemHandler(createData: { name: string; price: number; stockQuantity: number }): Promise<any> {
   const externalApiUrl = `http://localhost:3000/products`;
