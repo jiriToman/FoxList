@@ -1,42 +1,58 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import TableItem from './TableItem'; // Corrected import name (uppercase)
-import {getItemsHandler} from '@/app/api/api'
+import TableItem from './tableItem';
+import { getItemsHandler, Item } from '@/app/api/api';
 
-interface Item {
-    id: number;
-    name: string;
-    price: number;
-    stockQuantity: number;
+interface ItemListProps {
+    items: Item[];
+    onItemDeleted: (itemId: number) => void;
+    onItemUpdated: (updatedItem: Item) => void;
 }
 
-const ItemList: React.FC = () => {
-    const [items, setItems] = useState<Item[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+function isError(err: unknown): err is Error {
+    return err instanceof Error;
+}
+
+const ItemList: React.FC<ItemListProps> = ({ items, onItemDeleted, onItemUpdated }) => {
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [localItems, setLocalItems] = useState<Item[]>(items)
+
+    useEffect(() => {
+        setLocalItems(items);
+    }, [items]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true);
                 const fetchedItems = await getItemsHandler();
-                setItems(fetchedItems);
-            } catch (err: any) {
-                setError(err.message || "An error occurred while fetching items.");
+                setLocalItems(fetchedItems);
+            } catch (err: unknown) { // Change any to unknown
+                if (isError(err)) {
+                    setError(err.message || "An error occurred while fetching items.");
+                } else {
+                    setError("An unknown error occurred.");
+                }
             } finally {
                 setLoading(false);
             }
         };
-        fetchData();
-    }, []);
 
-    const handleItemDeleted = (itemId: number) => {
-        setItems(prevItems => prevItems.filter(item => item.id !== itemId));
+        if (items.length === 0) {
+            fetchData();
+        }
+    }, [items]);
+
+    const handleItemDeletedLocal = (itemId: number) => {
+        setLocalItems(prevItems => prevItems.filter(item => item.id !== itemId));
+        onItemDeleted(itemId)
     };
-    const handleItemUpdated = (updatedItem: Item) => {
-        setItems(prevItems =>
+    const handleItemUpdatedLocal = (updatedItem: Item) => {
+        setLocalItems(prevItems =>
             prevItems.map(item => (item.id === updatedItem.id ? updatedItem : item))
         );
+        onItemUpdated(updatedItem)
     };
 
     if (loading) {
@@ -50,7 +66,7 @@ const ItemList: React.FC = () => {
     return (
         <table className="w-full">
             <thead>
-                <tr className="[&>*:not(:last-child)]:mr-[15px]">
+                <tr>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Stock Quantity</th>
@@ -58,12 +74,12 @@ const ItemList: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {items.map(item => (
+                {localItems.map(item => (
                     <TableItem
                         key={item.id}
                         item={item}
-                        onItemDeleted={handleItemDeleted}
-                        onItemUpdated={handleItemUpdated} // Add update item
+                        onItemDeleted={handleItemDeletedLocal}
+                        onItemUpdated={handleItemUpdatedLocal}
                     />
                 ))}
             </tbody>

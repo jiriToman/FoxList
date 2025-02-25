@@ -12,10 +12,10 @@ interface Item {
 interface TableItemProps {
     item: Item;
     onItemDeleted: (itemId: number) => void;
-    onItemUpdated: (updatedItem: Item) => void; //add missing props
+    onItemUpdated: (updatedItem: Item) => void;
 }
 
-const TableItem: React.FC<TableItemProps> = ({ item, onItemDeleted, onItemUpdated }) => { // add missing props
+const TableItem: React.FC<TableItemProps> = ({ item, onItemDeleted, onItemUpdated }) => {
     const { id, name, price, stockQuantity } = item;
     const [isDeleting, setIsDeleting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -46,7 +46,7 @@ const TableItem: React.FC<TableItemProps> = ({ item, onItemDeleted, onItemUpdate
             const responseData = await updateItemHandler(id, updatedData);
             console.log('Item updated successfully:', responseData);
             alert("Item updated successfully:" + JSON.stringify(responseData));
-            onItemUpdated(responseData) // add missing method
+            onItemUpdated(responseData)
             setShowUpdateForm(false);
         } catch (error) {
             console.error('Error updating item:', error);
@@ -57,15 +57,15 @@ const TableItem: React.FC<TableItemProps> = ({ item, onItemDeleted, onItemUpdate
     };
 
     return (
-        <tr className="[&>*:not(:last-child)]:mr-[15px]">
-            <td>{name}</td>
-            <td>${price.toFixed(2)}</td>
-            <td>{stockQuantity}</td>
-            <td>
-                <button onClick={handleDeleteClick} disabled={isDeleting}>
+        <tr className="[&>*:not(:last-child)]:mr-0"> {/*Removed  margin-right */}
+            <td className="p-[15px]">{name}</td> {/* Added padding here */}
+            <td className="p-[15px]">${price.toFixed(2)}</td> {/* Added padding here */}
+            <td className="p-[15px]">{stockQuantity}</td> {/* Added padding here */}
+            <td className="p-[15px] flex justify-center"> {/* Added padding here and flex for allignment */}
+                <button onClick={handleDeleteClick} disabled={isDeleting} className="px-[5px] py-[2px] mr-2">
                     {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
-                <button onClick={handleUpdateClick} disabled={isUpdating}>
+                <button onClick={handleUpdateClick} disabled={isUpdating} className="px-[5px] py-[2px]">
                     {isUpdating ? 'Updating...' : 'Update'}
                 </button>
                 {showUpdateForm && (
