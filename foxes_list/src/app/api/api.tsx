@@ -63,7 +63,8 @@ export async function updateItemHandler(itemId: number, updateData: { name: stri
       throw new Error(`Request failed with status: ${response.status}`);
   }
 
-  return response.json(); 
+  return response.json();
+}
 
 export async function createItemHandler(createData: { name: string; price: number; stockQuantity: number }): Promise<any> {
   const externalApiUrl = `http://localhost:3000/products`;
