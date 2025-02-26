@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { INPUT_FIELD_CLASS, PRIMARY_BUTTON_CLASS, SECONDARY_BUTTON_CLASS } from '../classConstants';
 
 interface UpdateFormData {
     name: string;
@@ -44,7 +45,7 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ initialData, onSubmit, onCancel
     }, [onCancel]);
 
     return (
-        <div ref={formRef} className="absolute bg-gray-100 border border-gray-300 p-4 rounded-lg shadow-lg">
+        <div ref={formRef} className="absolute bg-white border border-gray-300 p-4 rounded-lg shadow-lg z-20">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="flex flex-col">
                     <label htmlFor="name" className="font-medium text-gray-800">Name:</label>
@@ -53,7 +54,7 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ initialData, onSubmit, onCancel
                         id="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className="border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
+                        className={INPUT_FIELD_CLASS}
                     />
                 </div>
                 <div className="flex flex-col">
@@ -63,7 +64,7 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ initialData, onSubmit, onCancel
                         id="price"
                         value={formData.price}
                         onChange={handleChange}
-                        className="border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
+                        className={INPUT_FIELD_CLASS}
                     />
                 </div>
                 <div className="flex flex-col">
@@ -73,13 +74,13 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ initialData, onSubmit, onCancel
                         id="stockQuantity"
                         value={formData.stockQuantity}
                         onChange={handleChange}
-                        className="border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
+                        className={INPUT_FIELD_CLASS}
                     />
                 </div>
                 <div className="flex gap-3">
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className={PRIMARY_BUTTON_CLASS}
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? 'Saving...' : 'Save'}
@@ -87,7 +88,7 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ initialData, onSubmit, onCancel
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="bg-gray-600 text-white rounded-md px-4 py-2 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className={SECONDARY_BUTTON_CLASS}
                         disabled={isSubmitting}
                     >
                         Cancel

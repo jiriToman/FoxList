@@ -8,8 +8,10 @@ interface ItemListProps {
     onItemDeleted: (itemId: number) => void;
     onItemUpdated: (updatedItem: Item) => void;
 }
+
 const ItemList: React.FC<ItemListProps> = ({ items, onItemDeleted, onItemUpdated }) => {
     const [localItems, setLocalItems] = useState<Item[]>(items);
+    const [openPopoverItemId, setOpenPopoverItemId] = useState<number | null>(null);
 
     useEffect(() => {
         setLocalItems(items);
@@ -24,6 +26,10 @@ const ItemList: React.FC<ItemListProps> = ({ items, onItemDeleted, onItemUpdated
             prevItems.map(item => (item.id === updatedItem.id ? updatedItem : item))
         );
         onItemUpdated(updatedItem)
+    };
+
+    const handlePopoverToggle = (itemId: number) => {
+        setOpenPopoverItemId(prevId => (prevId === itemId ? null : itemId));
     };
 
     return (
@@ -43,6 +49,8 @@ const ItemList: React.FC<ItemListProps> = ({ items, onItemDeleted, onItemUpdated
                         item={item}
                         onItemDeleted={handleItemDeletedLocal}
                         onItemUpdated={handleItemUpdatedLocal}
+                        isOpen={openPopoverItemId === item.id}
+                        onPopoverToggle={handlePopoverToggle}
                     />
                 ))}
             </tbody>
